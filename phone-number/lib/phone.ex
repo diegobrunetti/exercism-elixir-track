@@ -27,7 +27,10 @@ defmodule Phone do
   defp from_string(raw) do
     clean = String.replace(raw, @punctuation_pattern, "")
     phone_parts = Regex.scan(@phone_pattern, clean, capture: :all_but_first) |> List.flatten()
+    create_phone(phone_parts)
+  end
 
+  defp create_phone(phone_parts) do
     if(phone_parts != []) do
       [c_code, a_code, e_code, s_number] = phone_parts
       number = "#{a_code}#{e_code}#{s_number}"
