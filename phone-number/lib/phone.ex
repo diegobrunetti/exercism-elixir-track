@@ -30,22 +30,19 @@ defmodule Phone do
     create_phone(phone_parts)
   end
 
-  defp create_phone(phone_parts) do
-    if(phone_parts != []) do
-      [c_code, a_code, e_code, s_number] = phone_parts
-      number = "#{a_code}#{e_code}#{s_number}"
+  defp create_phone([]), do: %Phone{}
 
-      %Phone{
-        length: String.length(number),
-        digits: number,
-        c_code: c_code,
-        a_code: a_code,
-        e_code: e_code,
-        s_number: s_number
-      }
-    else
-      invalid()
-    end
+  defp create_phone([c_code, a_code, e_code, s_number]) do
+    number = "#{a_code}#{e_code}#{s_number}"
+
+    %Phone{
+      length: String.length(number),
+      digits: number,
+      c_code: c_code,
+      a_code: a_code,
+      e_code: e_code,
+      s_number: s_number
+    }
   end
 
   defp validate(%Phone{c_code: c_code} = phone) when c_code != "",
