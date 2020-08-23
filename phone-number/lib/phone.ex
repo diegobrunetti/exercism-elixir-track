@@ -30,7 +30,7 @@ defmodule Phone do
     create_phone(phone_parts)
   end
 
-  defp create_phone([]), do: %Phone{}
+  defp create_phone([]), do: invalid()
 
   defp create_phone([c_code, a_code, e_code, s_number]) do
     number = "#{a_code}#{e_code}#{s_number}"
