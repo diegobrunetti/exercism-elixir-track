@@ -10,12 +10,12 @@ that's completely equal to A.
 
 Examples:
 
- * A = [1, 2, 3], B = [1, 2, 3, 4, 5], A is a sublist of B
- * A = [3, 4, 5], B = [1, 2, 3, 4, 5], A is a sublist of B
- * A = [3, 4], B = [1, 2, 3, 4, 5], A is a sublist of B
- * A = [1, 2, 3], B = [1, 2, 3], A is equal to B
- * A = [1, 2, 3, 4, 5], B = [2, 3, 4], A is a superlist of B
- * A = [1, 2, 4], B = [1, 2, 3, 4, 5], A is not a superlist of, sublist of or equal to B
+- A = [1, 2, 3], B = [1, 2, 3, 4, 5], A is a sublist of B
+- A = [3, 4, 5], B = [1, 2, 3, 4, 5], A is a sublist of B
+- A = [3, 4], B = [1, 2, 3, 4, 5], A is a sublist of B
+- A = [1, 2, 3], B = [1, 2, 3], A is equal to B
+- A = [1, 2, 3, 4, 5], B = [2, 3, 4], A is a superlist of B
+- A = [1, 2, 4], B = [1, 2, 3, 4, 5], A is not a superlist of, sublist of or equal to B
 
 ## Running tests
 
@@ -30,12 +30,12 @@ $ mix test
 In the test suites, all but the first test have been skipped.
 
 Once you get a test passing, you can unskip the next one by
-commenting out the relevant `@tag :pending` with a `#` symbol.
+commenting out the relevant `` with a `#` symbol.
 
 For example:
 
 ```elixir
-# @tag :pending
+#
 test "shouting" do
   assert Bob.hey("WATCH OUT!") == "Whoa, chill out!"
 end
@@ -53,4 +53,5 @@ the [available resources](https://exercism.io/tracks/elixir/resources)
 out there where answers might be found.
 
 ## Submitting Incomplete Solutions
+
 It's possible to submit an incomplete solution so you can see how others have completed the exercise.

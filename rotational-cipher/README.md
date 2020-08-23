@@ -24,8 +24,8 @@ Ciphertext is written out in the same formatting as the input including spaces a
 
 ## Examples
 
-- ROT5  `omg` gives `trl`
-- ROT0  `c` gives `c`
+- ROT5 `omg` gives `trl`
+- ROT0 `c` gives `c`
 - ROT26 `Cool` gives `Cool`
 - ROT13 `The quick brown fox jumps over the lazy dog.` gives `Gur dhvpx oebja sbk whzcf bire gur ynml qbt.`
 - ROT13 `Gur dhvpx oebja sbk whzcf bire gur ynml qbt.` gives `The quick brown fox jumps over the lazy dog.`
@@ -43,12 +43,12 @@ $ mix test
 In the test suites, all but the first test have been skipped.
 
 Once you get a test passing, you can unskip the next one by
-commenting out the relevant `@tag :pending` with a `#` symbol.
+commenting out the relevant `` with a `#` symbol.
 
 For example:
 
 ```elixir
-# @tag :pending
+#
 test "shouting" do
   assert Bob.hey("WATCH OUT!") == "Whoa, chill out!"
 end
@@ -70,4 +70,5 @@ out there where answers might be found.
 Wikipedia [https://en.wikipedia.org/wiki/Caesar_cipher](https://en.wikipedia.org/wiki/Caesar_cipher)
 
 ## Submitting Incomplete Solutions
+
 It's possible to submit an incomplete solution so you can see how others have completed the exercise.

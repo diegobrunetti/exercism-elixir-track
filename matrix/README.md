@@ -53,12 +53,12 @@ $ mix test
 In the test suites, all but the first test have been skipped.
 
 Once you get a test passing, you can unskip the next one by
-commenting out the relevant `@tag :pending` with a `#` symbol.
+commenting out the relevant `` with a `#` symbol.
 
 For example:
 
 ```elixir
-# @tag :pending
+#
 test "shouting" do
   assert Bob.hey("WATCH OUT!") == "Whoa, chill out!"
 end
@@ -80,4 +80,5 @@ out there where answers might be found.
 Warmup to the `saddle-points` warmup. [http://jumpstartlab.com](http://jumpstartlab.com)
 
 ## Submitting Incomplete Solutions
+
 It's possible to submit an incomplete solution so you can see how others have completed the exercise.

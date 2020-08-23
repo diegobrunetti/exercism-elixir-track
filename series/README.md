@@ -17,8 +17,8 @@ And the following 4-digit series:
 And if you ask for a 6-digit series from a 5-digit string, you deserve
 whatever you get.
 
-Note that these series are only required to occupy *adjacent positions*
-in the input; the digits need not be *numerically consecutive*.
+Note that these series are only required to occupy _adjacent positions_
+in the input; the digits need not be _numerically consecutive_.
 
 ## Running tests
 
@@ -33,12 +33,12 @@ $ mix test
 In the test suites, all but the first test have been skipped.
 
 Once you get a test passing, you can unskip the next one by
-commenting out the relevant `@tag :pending` with a `#` symbol.
+commenting out the relevant `` with a `#` symbol.
 
 For example:
 
 ```elixir
-# @tag :pending
+#
 test "shouting" do
   assert Bob.hey("WATCH OUT!") == "Whoa, chill out!"
 end
@@ -60,4 +60,5 @@ out there where answers might be found.
 A subset of the Problem 8 at Project Euler [http://projecteuler.net/problem=8](http://projecteuler.net/problem=8)
 
 ## Submitting Incomplete Solutions
+
 It's possible to submit an incomplete solution so you can see how others have completed the exercise.

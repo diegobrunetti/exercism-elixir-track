@@ -11,14 +11,14 @@ In the end, you should be able to:
 - Get a list of all students enrolled in a grade
   - "Which students are in grade 2?"
   - "We've only got Jim just now."
-- Get a sorted list of all students in all grades.  Grades should sort
+- Get a sorted list of all students in all grades. Grades should sort
   as 1, 2, 3, etc., and students within a grade should be sorted
   alphabetically by name.
   - "Who all is enrolled in school right now?"
   - "Grade 1: Anna, Barb, and Charlie. Grade 2: Alex, Peter, and Zoe.
     Grade 3…"
 
-Note that all our students only have one name.  (It's a small town, what
+Note that all our students only have one name. (It's a small town, what
 do you want?)
 
 ## For bonus points
@@ -47,12 +47,12 @@ $ mix test
 In the test suites, all but the first test have been skipped.
 
 Once you get a test passing, you can unskip the next one by
-commenting out the relevant `@tag :pending` with a `#` symbol.
+commenting out the relevant `` with a `#` symbol.
 
 For example:
 
 ```elixir
-# @tag :pending
+#
 test "shouting" do
   assert Bob.hey("WATCH OUT!") == "Whoa, chill out!"
 end
@@ -74,4 +74,5 @@ out there where answers might be found.
 A pairing session with Phil Battos at gSchool [http://gschool.it](http://gschool.it)
 
 ## Submitting Incomplete Solutions
+
 It's possible to submit an incomplete solution so you can see how others have completed the exercise.
