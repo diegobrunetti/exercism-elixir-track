@@ -1,0 +1,8 @@
+{
+    "files.exclude": {
+        "_build": true,
+        ".elixir_ls": true,
+        ".exercism*": true,
+        ".vscode": true
+    }
+}
