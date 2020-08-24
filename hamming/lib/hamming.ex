@@ -12,8 +12,8 @@ defmodule Hamming do
     compare(strand1, strand2)
   end
 
-  defp compare('', ''), do: ok(0)
   defp compare(a, b) when length(a) != length(b), do: error()
+  defp compare('', ''), do: ok(0)
 
   defp compare(a, b) do
     Enum.zip(a, b)
