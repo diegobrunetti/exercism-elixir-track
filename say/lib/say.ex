@@ -74,9 +74,8 @@ defmodule Say do
     append("#{prefix} #{@dictionary[scale]}", acc)
   end
 
-  defp append(string, acc) do
-    if(acc != "", do: acc <> " #{string}", else: acc <> string)
-  end
+  defp append(string, ""), do: string
+  defp append(string, acc), do: acc <> " #{string}"
 
   defp error(), do: {:error, "number is out of range"}
 end
