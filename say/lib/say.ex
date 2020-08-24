@@ -1,7 +1,7 @@
 defmodule Say do
   @max 999_999_999_999
 
-  @dictionary %{
+  @scales %{
     1_000_000_000 => "billion",
     1_000_000 => "million",
     1_000 => "thousand",
@@ -49,7 +49,7 @@ defmodule Say do
 
   defp chunks(number, acc) do
     scale =
-      Map.keys(@dictionary)
+      Map.keys(@scales)
       |> Enum.reverse()
       |> Enum.find(fn n -> n <= number end)
 
@@ -65,13 +65,13 @@ defmodule Say do
     {:ok, translated}
   end
 
-  defp to_english({_, scale}, "") when scale <= 20, do: @dictionary[scale]
-  defp to_english({_, scale}, acc) when scale < 20, do: acc <> "-#{@dictionary[scale]}"
-  defp to_english({_, scale}, acc) when scale in 20..90, do: append(@dictionary[scale], acc)
+  defp to_english({_, scale}, "") when scale <= 20, do: @scales[scale]
+  defp to_english({_, scale}, acc) when scale < 20, do: acc <> "-#{@scales[scale]}"
+  defp to_english({_, scale}, acc) when scale in 20..90, do: append(@scales[scale], acc)
 
   defp to_english({units, scale}, acc) do
     {_, prefix} = in_english(units)
-    append("#{prefix} #{@dictionary[scale]}", acc)
+    append("#{prefix} #{@scales[scale]}", acc)
   end
 
   defp append(string, ""), do: string
