@@ -40,11 +40,10 @@ defmodule Say do
   Translate a positive integer into English.
   """
   @spec in_english(integer) :: {atom, String.t()}
-  def in_english(number) do
-    chunks(number, []) |> speak()
-  end
+  def in_english(number) when number < 0, do: error()
+  def in_english(number), do: chunks(number, []) |> speak()
 
-  defp chunks(0, []), do: [0]
+  defp chunks(0, []), do: [{0, 0}]
   defp chunks(0, acc), do: acc
   defp chunks(number, _) when number > @max, do: []
 
@@ -54,19 +53,30 @@ defmodule Say do
       |> Enum.reverse()
       |> Enum.find(fn n -> n <= number end)
 
-    chunks(number - scale, acc ++ [scale])
+    units = floor(number / scale)
+    remainder = rem(number, scale)
+    chunks(remainder, acc ++ [{units, scale}])
   end
 
   defp speak([]), do: error()
 
   defp speak(chunks) do
-    translated = chunks |> Enum.reduce("", fn n, acc -> to_english(n, acc) end)
+    translated = chunks |> Enum.reduce("", fn chunk, acc -> to_english(chunk, acc) end)
     {:ok, translated}
   end
 
-  defp to_english(number, "") when number <= 20, do: @dictionary[number]
-  defp to_english(number, acc) when number <= 20, do: acc <> "-#{@dictionary[number]}"
-  defp to_english(number, acc), do: acc <> "#{number} #{@dictionary[number]}"
+  defp to_english({_, scale}, "") when scale <= 20, do: @dictionary[scale]
+  defp to_english({_, scale}, acc) when scale < 20, do: acc <> "-#{@dictionary[scale]}"
+  defp to_english({_, scale}, acc) when scale in 20..90, do: append(@dictionary[scale], acc)
+
+  defp to_english({units, scale}, acc) do
+    {_, prefix} = in_english(units)
+    append("#{prefix} #{@dictionary[scale]}", acc)
+  end
+
+  defp append(string, acc) do
+    if(acc != "", do: acc <> " #{string}", else: acc <> string)
+  end
 
   defp error(), do: {:error, "number is out of range"}
 end
