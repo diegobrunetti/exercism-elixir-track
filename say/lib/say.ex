@@ -70,7 +70,7 @@ defmodule Say do
   defp to_english({_, scale}, acc) when scale in 20..90, do: append(@scales[scale], acc)
 
   defp to_english({units, scale}, acc) do
-    {_, prefix} = in_english(units)
+    {:ok, prefix} = in_english(units)
     append("#{prefix} #{@scales[scale]}", acc)
   end
 
