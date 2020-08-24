@@ -43,9 +43,9 @@ defmodule Say do
   def in_english(number) when number < 0, do: error()
   def in_english(number), do: chunks(number, []) |> speak()
 
+  defp chunks(number, _) when number > @max, do: []
   defp chunks(0, []), do: [{0, 0}]
   defp chunks(0, acc), do: acc
-  defp chunks(number, _) when number > @max, do: []
 
   defp chunks(number, acc) do
     scale =
