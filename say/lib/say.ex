@@ -65,7 +65,7 @@ defmodule Say do
     {:ok, translated}
   end
 
-  defp to_english({units, scale}, acc) when scale > 90 do
+  defp to_english({units, scale}, acc) when scale >= 100 do
     {:ok, prefix} = in_english(units)
     append("#{prefix} #{@scales[scale]}", acc)
   end
