@@ -1,36 +1,34 @@
 defmodule BeerSong do
-  @first_part """
-  __n__ __b__ of beer on the wall, __n__ __b__ of beer.
-  """
-
-  @second_part """
-  Take __t__ down and pass it around, __n__ __b__ of beer on the wall.
-  """
-
-  @final_part """
-  No more bottles of beer on the wall, no more bottles of beer.
-  Go to the store and buy some more, 99 bottles of beer on the wall.
-  """
-
   @doc """
   Get a single verse of the beer song
   """
   @spec verse(integer) :: String.t()
-  def verse(0), do: @final_part
-
-  def verse(number) do
-    sing(@first_part, number) <> sing(@second_part, number - 1)
+  def verse(0) do
+    """
+    No more bottles of beer on the wall, no more bottles of beer.
+    Go to the store and buy some more, 99 bottles of beer on the wall.
+    """
   end
 
-  defp sing(verse, 0), do: replace(verse, "no more", "bottles", "it")
-  defp sing(verse, 1), do: replace(verse, "1", "bottle")
-  defp sing(verse, number), do: replace(verse, "#{number}", "bottles")
+  def verse(1) do
+    """
+    1 bottle of beer on the wall, 1 bottle of beer.
+    Take it down and pass it around, no more bottles of beer on the wall.
+    """
+  end
 
-  defp replace(verse, n, b, t \\ "one") do
-    verse
-    |> String.replace("__n__", n)
-    |> String.replace("__b__", b)
-    |> String.replace("__t__", t)
+  def verse(2) do
+    """
+    2 bottles of beer on the wall, 2 bottles of beer.
+    Take one down and pass it around, 1 bottle of beer on the wall.
+    """
+  end
+
+  def verse(n) do
+    """
+    #{n} bottles of beer on the wall, #{n} bottles of beer.
+    Take one down and pass it around, #{n - 1} bottles of beer on the wall.
+    """
   end
 
   @doc """
@@ -38,8 +36,6 @@ defmodule BeerSong do
   """
   @spec lyrics(Range.t()) :: String.t()
   def lyrics(range \\ 99..0) do
-    range
-    |> Enum.map(&verse/1)
-    |> Enum.join("\n")
+    range |> Enum.map_join("\n", &verse/1)
   end
 end
