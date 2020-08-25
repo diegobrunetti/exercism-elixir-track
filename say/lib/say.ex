@@ -65,14 +65,14 @@ defmodule Say do
     {:ok, translated}
   end
 
-  defp to_english({_, scale}, "") when scale <= 20, do: @scales[scale]
-  defp to_english({_, scale}, acc) when scale < 20, do: acc <> "-#{@scales[scale]}"
-  defp to_english({_, scale}, acc) when scale in 20..90, do: append(@scales[scale], acc)
-
-  defp to_english({units, scale}, acc) do
+  defp to_english({units, scale}, acc) when scale > 90 do
     {:ok, prefix} = in_english(units)
     append("#{prefix} #{@scales[scale]}", acc)
   end
+
+  defp to_english({_, scale}, "") when scale <= 20, do: @scales[scale]
+  defp to_english({_, scale}, acc) when scale < 20, do: acc <> "-#{@scales[scale]}"
+  defp to_english({_, scale}, acc) when scale in 20..90, do: append(@scales[scale], acc)
 
   defp append(string, ""), do: string
   defp append(string, acc), do: acc <> " #{string}"
