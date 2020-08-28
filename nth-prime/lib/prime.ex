@@ -11,7 +11,7 @@ defmodule Prime do
   end
 
   defp next_prime(_number, primes_so_far, nth) when length(primes_so_far) == nth - 1 do
-    hd(primes_so_far)
+    List.last(primes_so_far)
   end
 
   # Iterate through only odd values, incrementing by 2.
@@ -20,7 +20,7 @@ defmodule Prime do
     is_prime = Enum.all?(primes_so_far, fn n -> rem(number, n) != 0 end)
 
     if(is_prime) do
-      next_prime(number + 2, [number | primes_so_far] |> Enum.reverse(), nth)
+      next_prime(number + 2, primes_so_far ++ [number], nth)
     else
       next_prime(number + 2, primes_so_far, nth)
     end
