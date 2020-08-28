@@ -16,16 +16,11 @@ defmodule Prime do
 
   # Iterate through only odd values, incrementing by 2.
   # Divide each value by 2 < 𝑑𝑖𝑣𝑖𝑠𝑜𝑟 < sqrt(𝑣𝑎𝑙𝑢e), where 𝑑𝑖𝑣𝑖𝑠𝑜𝑟 is only any one of the primes
-  # computed thus far. Any further optimization to be had, or should I resort to a sieve?
-  # If the latter, then which one?
   defp next_prime(number, primes_so_far, nth) do
-    is_prime =
-      for(divisor <- primes_so_far, do: rem(number, divisor))
-      |> Enum.filter(&(&1 == 0))
-      |> Enum.empty?()
+    is_prime = Enum.all?(primes_so_far, fn n -> rem(number, n) != 0 end)
 
     if(is_prime) do
-      next_prime(number + 2, [number | primes_so_far], nth)
+      next_prime(number + 2, [number | primes_so_far] |> Enum.reverse(), nth)
     else
       next_prime(number + 2, primes_so_far, nth)
     end
