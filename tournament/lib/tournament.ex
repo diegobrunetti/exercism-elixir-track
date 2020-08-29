@@ -65,6 +65,6 @@ defmodule Tournament do
   defp rows(results), do: results |> Enum.map_join("\n", &print_score/1)
 
   defp print_score(s) do
-    String.pad_trailing(s.team, 30) <> " |  #{s.mp} |  #{s.w} |  #{s.d} |  #{s.l} |  #{s.p}"
+    ~s(#{String.pad_trailing(s.team, 30)} |  #{s.mp} |  #{s.w} |  #{s.d} |  #{s.l} |  #{s.p})
   end
 end
