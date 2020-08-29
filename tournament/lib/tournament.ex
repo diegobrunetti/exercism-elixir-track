@@ -1,5 +1,5 @@
 defmodule Tournament do
-  @match %{mp: 1, wins: 0, losses: 0, draws: 0, points: 0}
+  @match %{team: "", mp: 1, w: 0, l: 0, d: 0, p: 0}
   @header String.pad_trailing("Team", 31, " ") <> "| MP |  W |  D |  L |  P"
 
   @doc """
@@ -17,61 +17,54 @@ defmodule Tournament do
   def tally(input) do
     input
     |> Enum.map(&String.split(&1, ";"))
-    |> Enum.map_reduce(%{}, &calculate_results/2)
-    |> Enum.sort(fn {team, results} -> )
+    |> Enum.map(&compute_match/1)
+    |> Enum.reduce(%{}, &calc_tournament_results/2)
+    |> Map.values()
+    |> Enum.sort_by(& &1.p, :desc)
     |> print()
   end
 
-  defp calculate_results(match, acc) do
-    match = eval_match(match)
-    {match, Map.merge(match, acc, &update_team_results/3)}
-  end
-
-  defp eval_match([team_a, team_b, "win"]) do
+  defp compute_match([team_a, team_b, "win"]) do
     %{
-      team_a => %{@match | wins: 1, points: 3},
-      team_b => %{@match | losses: 1}
+      team_a => %{@match | team: team_a, w: 1, p: 3},
+      team_b => %{@match | team: team_b, l: 1}
     }
   end
 
-  defp eval_match([team_a, team_b, "draw"]) do
+  defp compute_match([team_a, team_b, "draw"]) do
     %{
-      team_a => %{@match | draws: 1, points: 1},
-      team_b => %{@match | draws: 1, points: 1}
+      team_a => %{@match | team: team_a, d: 1, p: 1},
+      team_b => %{@match | team: team_b, d: 1, p: 1}
     }
   end
 
-  defp eval_match([team_a, team_b, "loss"]) do
+  defp compute_match([team_a, team_b, "loss"]) do
     %{
-      team_a => %{@match | losses: 1},
-      team_b => %{@match | wins: 1, points: 3}
+      team_a => %{@match | team: team_a, l: 1},
+      team_b => %{@match | team: team_b, w: 1, p: 3}
     }
   end
 
-  defp update_team_results(_team, match_a, match_b) do
+  defp compute_match(_invalid_input), do: %{}
+
+  defp calc_tournament_results(match, acc), do: Map.merge(match, acc, &update_team_result/3)
+
+  defp update_team_result(team, match_a, match_b) do
     %{
+      team: team,
       mp: match_a.mp + match_b.mp,
-      wins: match_a.wins + match_b.wins,
-      losses: match_a.losses + match_b.losses,
-      draws: match_a.draws + match_b.draws,
-      points: match_a.points + match_b.points
+      w: match_a.w + match_b.w,
+      l: match_a.l + match_b.l,
+      d: match_a.d + match_b.d,
+      p: match_a.p + match_b.p
     }
   end
 
-  defp print({_, results}) do
-    """
-    #{@header}
-    #{rows(results)}
-    """
-  end
+  defp print(results), do: @header <> "\n" <> rows(results)
 
-  defp rows(results) do
-    results
-    |> Enum.map(fn {team, r} -> print_score([team, r.mp, r.wins, r.draws, r.losses, r.points]) end)
-    |> Enum.join("\n")
-  end
+  defp rows(results), do: results |> Enum.map_join("\n", &print_score/1)
 
-  defp print_score([team, mp, w, d, l, p]) do
-    String.pad_trailing(team, 30) <> " |  #{mp} |  #{w} |  #{d} |  #{l} |  #{p}"
+  defp print_score(s) do
+    String.pad_trailing(s.team, 30) <> " |  #{s.mp} |  #{s.w} |  #{s.d} |  #{s.l} |  #{s.p}"
   end
 end
