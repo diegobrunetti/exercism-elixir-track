@@ -1,5 +1,4 @@
 defmodule IsbnVerifier do
-  @allowed_chars ~r/[^[:digit:][:upper:]]/u
   @doc """
     Checks if a string is a valid ISBN-10 identifier
 
@@ -14,30 +13,25 @@ defmodule IsbnVerifier do
   """
   @spec isbn?(String.t()) :: boolean
   def isbn?(isbn) do
-    isbn
+    String.reverse(isbn)
     |> format()
-    |> apply_formula()
+    |> apply_formula(0, 10)
   end
 
-  defp format(isbn) do
-    isbn
-    |> String.replace(@allowed_chars, "")
-    |> to_charlist()
-    |> Enum.map(&to_integer/1)
+  defp format(<<check, digits::binary>>) when check in ?0..?9 or check == ?X do
+    <<check>> <> for(<<c <- digits>>, c in ?0..?9, into: "", do: <<c>>)
   end
 
-  defp apply_formula([]), do: false
+  defp format(_invalid_isbn), do: :invalid
 
-  defp apply_formula(digits) when length(digits) == 10 do
-    digits
-    |> Enum.zip(10..1)
-    |> Enum.reduce(0, fn {digit, multiplier}, acc -> digit * multiplier + acc end)
-    |> rem(11) == 0
+  defp apply_formula(:invalid, _, _), do: false
+  defp apply_formula(<<>>, acc, _weight), do: rem(acc, 11) == 0
+
+  defp apply_formula(<<first, rest::binary>>, acc, weight) do
+    sum_so_far = to_integer(first) * weight + acc
+    apply_formula(rest, sum_so_far, weight - 1)
   end
-
-  defp apply_formula(_), do: false
 
   defp to_integer(?X), do: 10
-  defp to_integer(digit) when digit in ?0..?9, do: digit - ?0
-  defp to_integer(_invalid), do: 666
+  defp to_integer(digit), do: digit - ?0
 end
