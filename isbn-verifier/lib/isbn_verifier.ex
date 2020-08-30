@@ -38,6 +38,6 @@ defmodule IsbnVerifier do
   defp apply_formula(_), do: false
 
   defp to_integer(?X), do: 10
-  defp to_integer(digit) when digit in ?0..?9, do: digit - 48
+  defp to_integer(digit) when digit in ?0..?9, do: digit - ?0
   defp to_integer(_invalid), do: 666
 end
