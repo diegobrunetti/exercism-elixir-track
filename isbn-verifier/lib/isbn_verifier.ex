@@ -26,11 +26,11 @@ defmodule IsbnVerifier do
 
   defp format(_invalid_isbn), do: :invalid_isbn
 
-  defp apply_formula(:invalid_isbn, _acc, _weight), do: false
-  defp apply_formula(<<>>, acc, _weight), do: rem(acc, 11) == 0
+  defp apply_formula(:invalid_isbn, _sum, _weight), do: false
+  defp apply_formula(<<>>, sum, _weight), do: rem(sum, 11) == 0
 
-  defp apply_formula(<<first, rest::binary>>, acc, weight) do
-    sum_so_far = to_integer(first) * weight + acc
+  defp apply_formula(<<first, rest::binary>>, sum, weight) do
+    sum_so_far = to_integer(first) * weight + sum
     apply_formula(rest, sum_so_far, weight - 1)
   end
 
