@@ -1,4 +1,6 @@
 defmodule IsbnVerifier do
+  @starting_weight 10
+
   @doc """
     Checks if a string is a valid ISBN-10 identifier
 
@@ -15,16 +17,16 @@ defmodule IsbnVerifier do
   def isbn?(isbn) do
     String.reverse(isbn)
     |> format()
-    |> apply_formula(0, 10)
+    |> apply_formula(0, @starting_weight)
   end
 
   defp format(<<check, digits::binary>>) when check in ?0..?9 or check == ?X do
     <<check>> <> for(<<c <- digits>>, c in ?0..?9, into: "", do: <<c>>)
   end
 
-  defp format(_invalid_isbn), do: :invalid
+  defp format(_invalid_isbn), do: :invalid_isbn
 
-  defp apply_formula(:invalid, _, _), do: false
+  defp apply_formula(:invalid_isbn, _acc, _weight), do: false
   defp apply_formula(<<>>, acc, _weight), do: rem(acc, 11) == 0
 
   defp apply_formula(<<first, rest::binary>>, acc, weight) do
