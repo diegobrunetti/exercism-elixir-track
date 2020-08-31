@@ -23,11 +23,11 @@ defmodule RobotSimulator do
     %RobotSimulator{direction: direction, position: {x, y}}
   end
 
-  def create(direction, _) when not is_direction(direction) do
+  def create(direction, _position) when not is_direction(direction) do
     {:error, "invalid direction"}
   end
 
-  def create(_, _invalid_position) do
+  def create(_direction, _invalid_position) do
     {:error, "invalid position"}
   end
 
