@@ -1,6 +1,8 @@
 defmodule IsbnVerifier do
   @starting_weight 10
 
+  defguardp is_valid_check_character(check) when check in ?0..?9 or check == ?X
+
   @doc """
     Checks if a string is a valid ISBN-10 identifier
 
@@ -20,7 +22,7 @@ defmodule IsbnVerifier do
     |> apply_formula(0, @starting_weight)
   end
 
-  defp format(<<check, digits::binary>>) when check in ?0..?9 or check == ?X do
+  defp format(<<check, digits::binary>>) when is_valid_check_character(check) do
     <<check>> <> for(<<c <- digits>>, c in ?0..?9, into: "", do: <<c>>)
   end
 
