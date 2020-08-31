@@ -23,7 +23,7 @@ defmodule IsbnVerifier do
   end
 
   defp format(<<check, digits::binary>>) when is_valid_check_character(check) do
-    <<check>> <> for(<<c <- digits>>, c in ?0..?9, into: "", do: <<c>>)
+    <<check>> <> for(<<d <- digits>>, d in ?0..?9, into: "", do: <<d>>)
   end
 
   defp format(_invalid_isbn), do: :invalid_isbn
