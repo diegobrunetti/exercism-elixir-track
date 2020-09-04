@@ -10,14 +10,14 @@ defmodule Grains do
   end
 
   def square(number) do
-    {:ok, grains(number)}
+    {:ok, grains_at(number)}
   end
 
   @doc """
   Adds square of each number from 1 to 64.
   """
   @spec total :: {:ok, pos_integer}
-  def total, do: {:ok, grains(65) - 1}
+  def total, do: {:ok, grains_at(65) - 1}
 
-  defp grains(square), do: :math.pow(2, square - 1) |> trunc()
+  defp grains_at(number), do: :math.pow(2, number - 1) |> trunc()
 end
