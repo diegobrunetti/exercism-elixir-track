@@ -18,7 +18,7 @@ defmodule Grains do
   """
   @spec total :: {:ok, pos_integer}
   def total do
-    {:ok, @squares_range |> Enum.reduce(0, fn n, acc -> acc + calc_grains(n) end)}
+    {:ok, calc_grains(65) - 1}
   end
 
   defp calc_grains(square), do: :math.pow(2, square - 1) |> trunc()
