@@ -21,7 +21,7 @@ defmodule BinarySearchTree do
     %{tree | left: insert(tree.left, new_data)}
   end
 
-  def insert(%{data: data} = tree, new_data) when new_data > data do
+  def insert(tree, new_data) do
     %{tree | right: insert(tree.right, new_data)}
   end
 
