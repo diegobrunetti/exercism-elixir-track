@@ -46,7 +46,7 @@ defmodule ListOps do
 
   def concat(ll) do
     ll
-    |> reduce([], &do_reverse/2)
+    |> reduce([], &do_concat/2)
     |> reverse()
   end
 
