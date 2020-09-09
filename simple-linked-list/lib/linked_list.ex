@@ -27,8 +27,8 @@ defmodule LinkedList do
   Determine if a LinkedList is empty
   """
   @spec empty?(t) :: boolean()
-  def empty?({}), do: true
-  def empty?(_list), do: false
+  def empty?({_head, _tail}), do: false
+  def empty?(_empty), do: true
 
   @doc """
   Get the value of a head of the LinkedList
