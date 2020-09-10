@@ -29,7 +29,7 @@ defmodule Change do
   defp result(coins), do: {:ok, coins}
 
   defp make_change([], _target, _acc), do: nil
-  defp make_change(_, 0, acc), do: Enum.reverse(acc)
+  defp make_change(_coins, 0, acc), do: Enum.reverse(acc)
 
   defp make_change([coin | bigger_coins] = coins, target, acc) when coin <= target do
     make_change(bigger_coins, target, acc) || make_change(coins, target - coin, [coin | acc])
