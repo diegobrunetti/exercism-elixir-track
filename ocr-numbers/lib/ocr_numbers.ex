@@ -49,7 +49,7 @@ defmodule OcrNumbers do
     end
   end
 
-  defp parse_columns(<<>>, columns), do: columns
+  defp parse_columns(<<>>, acc), do: acc
 
   defp parse_columns(<<column::binary-size(@column_size), rest::binary>>, acc) do
     parse_columns(rest, [column | acc])
@@ -68,12 +68,7 @@ defmodule OcrNumbers do
 
   defp read_numbers([l1, l2, l3, l4 | other_lines], acc) do
     first_line = [l1, l2, l3, l4]
-
-    if(other_lines != []) do
-      read_numbers(other_lines, acc ++ get_number(first_line) ++ [:comma])
-    else
-      read_numbers(other_lines, acc ++ get_number(first_line))
-    end
+    read_numbers(other_lines, acc ++ get_number(first_line) ++ [:comma])
   end
 
   defp get_number(line) do
@@ -86,6 +81,7 @@ defmodule OcrNumbers do
   defp decode({:error, _message} = error, _acc), do: error
 
   defp decode([], acc), do: {:ok, String.reverse(acc)}
+  defp decode([:comma | []], acc), do: decode([], acc)
   defp decode([:comma | rest], acc), do: decode(rest, acc <> ",")
   defp decode([n | rest], acc), do: decode(rest, acc <> Map.get(@numbers, n, "?"))
 end
