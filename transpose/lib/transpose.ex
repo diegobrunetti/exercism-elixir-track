@@ -26,7 +26,6 @@ defmodule Transpose do
     |> Enum.map(&String.graphemes/1)
     |> Enum.zip()
     |> Enum.map(&Tuple.to_list/1)
-    # |> to_string()
     |> Enum.join("\n")
     |> String.trim()
   end
