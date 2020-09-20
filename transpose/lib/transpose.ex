@@ -25,7 +25,8 @@ defmodule Transpose do
     |> normalize()
     |> Enum.map(&String.graphemes/1)
     |> Enum.zip()
-    |> to_string()
+    |> Enum.map(&Tuple.to_list/1)
+    # |> to_string()
     |> Enum.join("\n")
     |> String.trim()
   end
@@ -41,13 +42,5 @@ defmodule Transpose do
 
   defp fill_with_white_space(string, longer_string_length) do
     string <> String.duplicate(" ", longer_string_length - String.length(string))
-  end
-
-  defp to_string(row, acc \\ [])
-  defp to_string([], acc), do: Enum.reverse(acc)
-
-  defp to_string([row | other_rows], acc) do
-    line = Tuple.to_list(row) |> Enum.join("")
-    to_string(other_rows, [line | acc])
   end
 end
