@@ -1,4 +1,12 @@
 defmodule Markdown do
+  @italic {"_", "em"}
+  @bold {"__", "strong"}
+  @unordered_list {"", "ul"}
+
+  @italic_pattern ~r/(?<=_)(.*)(?=_)/
+  @bold_pattern ~r/(?<=__)(.*)(?=__)/
+  @unordered_list_pattern ~r/\<li\>(.*)\<\/li\>/
+
   @doc """
     Parses a given string with Markdown syntax and returns the associated HTML for that string.
 
@@ -11,69 +19,40 @@ defmodule Markdown do
     "<h1>Header!</h1><ul><li><em>Bold Item</em></li><li><i>Italic Item</i></li></ul>"
   """
   @spec parse(String.t()) :: String.t()
-  def parse(m) do
-    patch(Enum.join(Enum.map(String.split(m, "\n"), fn t -> process(t) end)))
+  def parse(text) do
+    text
+    |> String.split("\n")
+    |> Enum.map(&parse_paragraphs/1)
+    |> Enum.map(&parse_bolds/1)
+    |> Enum.map(&parse_italics/1)
+    |> Enum.map(&parse_headers/1)
+    |> Enum.map(&parse_unordered_list_items/1)
+    |> Enum.join("")
+    |> enclose_unordered_lists()
   end
 
-  defp process(t) do
-    if String.starts_with?(t, "#") || String.starts_with?(t, "*") do
-      if String.starts_with?(t, "#") do
-        enclose_with_header_tag(parse_header_md_level(t))
-      else
-        parse_list_md_level(t)
-      end
-    else
-      enclose_with_paragraph_tag(String.split(t))
-    end
+  defp parse_paragraphs(<<first, _any::binary>> = text) when first in '#*', do: do_nothing(text)
+  defp parse_paragraphs(text), do: "<p>#{text}</p>"
+
+  defp parse_italics(text), do: to_html(text, @italic, @italic_pattern)
+  defp parse_bolds(text), do: to_html(text, @bold, @bold_pattern)
+  defp enclose_unordered_lists(text), do: to_html(text, @unordered_list, @unordered_list_pattern)
+
+  defp to_html(text, {markdown, tag}, regex_pattern) do
+    html = Regex.replace(regex_pattern, text, fn value, _ -> "<#{tag}>#{value}</#{tag}>" end)
+    String.replace(html, markdown, "")
   end
 
-  defp parse_header_md_level(hwt) do
-    [h | t] = String.split(hwt)
-    {to_string(String.length(h)), Enum.join(t, " ")}
-  end
+  defp parse_headers(<<"###### ", text::binary>>), do: "<h6>#{text}</h6>"
+  defp parse_headers(<<"##### ", text::binary>>), do: "<h5>#{text}</h5>"
+  defp parse_headers(<<"#### ", text::binary>>), do: "<h4>#{text}</h4>"
+  defp parse_headers(<<"### ", text::binary>>), do: "<h3>#{text}</h3>"
+  defp parse_headers(<<"## ", text::binary>>), do: "<h2>#{text}</h2>"
+  defp parse_headers(<<"# ", text::binary>>), do: "<h1>#{text}</h1>"
+  defp parse_headers(not_a_header), do: do_nothing(not_a_header)
 
-  defp parse_list_md_level(l) do
-    t = String.split(String.trim_leading(l, "* "))
-    "<li>" <> join_words_with_tags(t) <> "</li>"
-  end
+  defp parse_unordered_list_items(<<"* ", text::binary>>), do: "<li>#{text}</li>"
+  defp parse_unordered_list_items(not_a_list), do: do_nothing(not_a_list)
 
-  defp enclose_with_header_tag({hl, htl}) do
-    "<h" <> hl <> ">" <> htl <> "</h" <> hl <> ">"
-  end
-
-  defp enclose_with_paragraph_tag(t) do
-    "<p>#{join_words_with_tags(t)}</p>"
-  end
-
-  defp join_words_with_tags(t) do
-    Enum.join(Enum.map(t, fn w -> replace_md_with_tag(w) end), " ")
-  end
-
-  defp replace_md_with_tag(w) do
-    replace_suffix_md(replace_prefix_md(w))
-  end
-
-  defp replace_prefix_md(w) do
-    cond do
-      w =~ ~r/^#{"__"}{1}/ -> String.replace(w, ~r/^#{"__"}{1}/, "<strong>", global: false)
-      w =~ ~r/^[#{"_"}{1}][^#{"_"}+]/ -> String.replace(w, ~r/_/, "<em>", global: false)
-      true -> w
-    end
-  end
-
-  defp replace_suffix_md(w) do
-    cond do
-      w =~ ~r/#{"__"}{1}$/ -> String.replace(w, ~r/#{"__"}{1}$/, "</strong>")
-      w =~ ~r/[^#{"_"}{1}]/ -> String.replace(w, ~r/_/, "</em>")
-      true -> w
-    end
-  end
-
-  defp patch(l) do
-    String.replace_suffix(
-      String.replace(l, "<li>", "<ul>" <> "<li>", global: false),
-      "</li>",
-      "</li>" <> "</ul>"
-    )
-  end
+  defp do_nothing(text), do: text
 end
