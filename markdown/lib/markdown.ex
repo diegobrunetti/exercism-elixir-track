@@ -43,12 +43,12 @@ defmodule Markdown do
     String.replace(html, markdown, "")
   end
 
-  defp parse_headers(<<"###### ", text::binary>>), do: "<h6>#{text}</h6>"
-  defp parse_headers(<<"##### ", text::binary>>), do: "<h5>#{text}</h5>"
-  defp parse_headers(<<"#### ", text::binary>>), do: "<h4>#{text}</h4>"
-  defp parse_headers(<<"### ", text::binary>>), do: "<h3>#{text}</h3>"
-  defp parse_headers(<<"## ", text::binary>>), do: "<h2>#{text}</h2>"
-  defp parse_headers(<<"# ", text::binary>>), do: "<h1>#{text}</h1>"
+  defp parse_headers("###### " <> text), do: "<h6>#{text}</h6>"
+  defp parse_headers("##### " <> text), do: "<h5>#{text}</h5>"
+  defp parse_headers("#### " <> text), do: "<h4>#{text}</h4>"
+  defp parse_headers("### " <> text), do: "<h3>#{text}</h3>"
+  defp parse_headers("## " <> text), do: "<h2>#{text}</h2>"
+  defp parse_headers("# " <> text), do: "<h1>#{text}</h1>"
   defp parse_headers(not_a_header), do: do_nothing(not_a_header)
 
   defp parse_unordered_list_items(<<"* ", text::binary>>), do: "<li>#{text}</li>"
